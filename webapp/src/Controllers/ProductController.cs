@@ -1,13 +1,14 @@
 namespace MyApp.Namespace;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MyEcommerceApi.Data;
-using MyEcommerceApi.Services;
+using webapp.src.Data;
+using webapp.src.Services;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ProductController(IProductService service) : ControllerBase
+public class ProductController(ILogger<ProductController> logger, IProductService service) : ControllerBase
 {
+    private readonly ILogger<ProductController> _logger = logger;
     private readonly IProductService _productService = service;
 
     [HttpGet("products/{id}")]

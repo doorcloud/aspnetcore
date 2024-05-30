@@ -1,7 +1,7 @@
-using MyEcommerceApi.Data;
-using MyEcommerceApi.Models;
+using webapp.src.Data;
+using webapp.src.Data.Models;
 
-namespace MyEcommerceApi.Repositories;
+namespace webapp.src.Repositories;
 
 
 public interface IProductRepository
@@ -34,7 +34,7 @@ public class ProductRepository(EcommerceContext context) : IProductRepository
             _context.Entry(product).Property(p => p.RowVersion).IsModified = true; // Mark RowVersion as modified
             await _context.SaveChangesAsync();
         }
-        catch (DbUpdateConcurrencyException)
+        catch 
         {
             // Handle concurrency exception (e.g., reload data or throw exception)
             throw; // You can customize the exception handling here

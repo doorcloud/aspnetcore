@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MyEcommerceApi.Models;
+namespace webapp.src.Data.Models;
 
 public class Order {
     [Key]

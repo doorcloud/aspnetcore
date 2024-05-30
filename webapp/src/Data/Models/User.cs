@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MyEcommerceApi.Models;
+namespace webapp.src.Data.Models;
 
 public class User {
     [Key]

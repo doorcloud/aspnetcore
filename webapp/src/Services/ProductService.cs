@@ -1,7 +1,7 @@
-using MyEcommerceApi.Models;
-using MyEcommerceApi.Repositories;
+using webapp.src.Data.Models;
+using webapp.src.Repositories;
 
-namespace MyEcommerceApi.Services;
+namespace webapp.src.Services;
 
 public interface IProductService
 {

@@ -1,27 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using MyEcommerceApi;
-using MyEcommerceApi.Models;
+using webapp.src;
+using webapp.src.Data.Models;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
-namespace MyEcommerceApi.Data;
+namespace webapp.src.Data;
 
-public partial class EcommerceContext : DbContext
+public partial class EcommerceContext(DbContextOptions<EcommerceContext> options, IConfiguration config) : DbContext(options)
 {
+
+    private readonly IConfiguration _config = config;
 
     public DbSet<Order> Orders { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<User> Users { get; set; }
-
-    public EcommerceContext()
-    {
-    }
-
-    public EcommerceContext(DbContextOptions<EcommerceContext> options)
-        : base(options)
-    {
-    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

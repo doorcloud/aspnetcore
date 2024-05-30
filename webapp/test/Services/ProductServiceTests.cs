@@ -1,6 +1,6 @@
-namespace MyEcommerceApi.Tests.Services;
-using MyEcommerceApi.Services;
-using MyEcommerceApi.Repositories;
+namespace webapp.test.Services;
+using webapp.src.Services;
+using webapp.src.Repositories;
 
 public class ProductServiceTests
 {

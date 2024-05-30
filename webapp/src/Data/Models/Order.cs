@@ -17,4 +17,7 @@ public class Order {
 
     public required ICollection<OrderRow> products { get; set; }
 
+    [Timestamp] // This marks the property for concurrency checking
+    public required byte[] RowVersion { get; set; }
+
 }

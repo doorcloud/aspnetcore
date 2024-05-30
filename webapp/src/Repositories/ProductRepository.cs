@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using webapp.src.Data;
 using webapp.src.Data.Models;
 
@@ -7,25 +8,15 @@ namespace webapp.src.Repositories;
 public interface IProductRepository
 {
     Task<IEnumerable<Product>> GetProductsAsync();
-    Task<Product> GetProductByIdAsync(string id);
+    Task<Product?> GetProductByIdAsync(string id);
     Task<Product> CreateProduct(Product product);
-    Task UpdateProduct(Product product);
-    Task DeleteProduct(string id);
+    Task<Product?> UpdateProduct(Product product);
+    Task<bool> DeleteProduct(string id);
 }
 
 public class ProductRepository(EcommerceContext context) : IProductRepository
 {
     private readonly EcommerceContext _context = context;
-
-    public async Task<IEnumerable<Product>> GetProductsAsync()
-    {
-        return await _context.Products.ToListAsync();
-    }
-
-    public async Task<Product> GetProductByIdAsync(string id)
-    {
-        return await _context.Products.FindAsync(id);
-    }
 
     public async Task<Product> CreateProduct(Product product)
     {
@@ -33,41 +24,46 @@ public class ProductRepository(EcommerceContext context) : IProductRepository
         await _context.SaveChangesAsync();
         return product;
     }
-    
 
-    public async Task<Product> UpdateProductAsync(string productId, Product productToUpdate)
+    public async Task<bool> DeleteProduct(string id)
     {
-        var product = await _context.Products.FindAsync(productId);
+        int affectedRows = 0;
+        // Attempt to delete the product using .Remove() with filtering
+        affectedRows = await _context.Products.Where(p => p.ID == id).ExecuteDeleteAsync();
 
-        if (product == null)
-        {
-            return null; // Product not found
-        }
-
-        product.Label= productToUpdate.Label;
-
-        try
-        {
-            _context.Entry(product).Property(p => p.RowVersion).IsModified = true; // Mark RowVersion as modified
-            await _context.SaveChangesAsync();
-        }
-        catch 
-        {
-            // Handle concurrency exception (e.g., reload data or throw exception)
-            throw; // You can customize the exception handling here
-        }
-
-        return product;
+        // Return true if at least one row was affected (indicating deletion)
+        return affectedRows > 0;
     }
 
-    public async Task DeleteProduct(string id)
+    public async Task<Product?> GetProductByIdAsync(string id)
     {
-        var product = await GetProductByIdAsync(id);
-        if (product != null)
+        return await _context.Products.FirstOrDefaultAsync(p => p.ID == id);
+    }
+
+    public async Task<IEnumerable<Product>> GetProductsAsync()
+    {
+        return await _context.Products.ToListAsync();
+    }
+
+    public async Task<Product?> UpdateProduct(Product product)
+    {   
+        var item = await _context.Products.FindAsync(product.ID);
+
+        if (item != null)
         {
-            _context.Products.Remove(product);
-           return await _context.SaveChangesAsync();
+            // Update properties on the existing product (assuming data transfer object pattern is not used)
+            item.Label = product.Label;
+            item.Price = product.Price;
+            item.Type = product.Type;
+            // Update other properties as needed
+
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+
+            // Return the updated product
+            return item;
         }
-        return null;
+
+        return null; //  if not found
     }
 }

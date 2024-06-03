@@ -14,9 +14,9 @@ public interface IProductRepository
     Task<bool> DeleteProduct(string id);
 }
 
-public class ProductRepository(EcommerceContext context) : IProductRepository
+public class ProductRepository(LContext context) : IProductRepository
 {
-    private readonly EcommerceContext _context = context;
+    private readonly LContext _context = context;
 
     public async Task<Product> CreateProduct(Product product)
     {

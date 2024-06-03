@@ -15,9 +15,9 @@ public class Order {
     public required string DeliveryAdresse { get; set; }
     public required string Status { get; set; }
 
-    public required ICollection<OrderRow> products { get; set; }
+    public required ICollection<OrderRow> Products { get; set; }
 
     [Timestamp] // This marks the property for concurrency checking
-    public required byte[] RowVersion { get; set; }
+    public byte[]? RowVersion { get; set; }
 
 }

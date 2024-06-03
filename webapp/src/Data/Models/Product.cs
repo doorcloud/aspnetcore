@@ -2,7 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace webapp.src.Data.Models;
 
-public class Product {
+public class Product()
+{
     [Key]
     public required string ID { get; set; }
     public required string Label { get; set; }
@@ -11,5 +12,5 @@ public class Product {
     public required string Price { get; set; }
 
     [Timestamp] // This marks the property for concurrency checking
-    public required byte[] RowVersion { get; set; }
+    public  byte[]? RowVersion { get; set; }
 }
